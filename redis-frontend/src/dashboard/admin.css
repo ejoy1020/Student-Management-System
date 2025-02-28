@@ -1,0 +1,790 @@
+
+
+.App {
+    text-align: center;
+  }
+  
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  
+  :root {
+    --poppins: 'Poppins', sans-serif;
+    --lato: 'Lato', sans-serif;
+  
+    --light: #F9F9F9;
+    --blue: #3C91E6;
+    --light-blue: #CFE8FF;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #342E37;
+    --red: #DB504A;
+    --yellow: #FFCE26;
+    --light-yellow: #FFF2C6;
+    --orange: #FD7238;
+    --light-orange: #FFE0D3;
+    --sidebar-expanded-width: 280px;
+    --sidebar-collapsed-width: 80px;
+    --content-expanded-width: calc(100% - 280px);
+    --content-collapsed-width: calc(100% - 80px);
+    --transition-duration: 0.3s;  /* Smooth transition duration */
+  }
+  
+  body {
+    background: var(--grey);
+    
+  }
+  
+  
+  a {
+    text-decoration: none; /* Removes underline from all links */
+  }
+
+  /* Logout Button */
+  
+  .logout-modal {
+    position: fixed;  /* Position the modal relative to the viewport */
+    top: 50%;         /* Place it in the middle vertically */
+    left: 50%;        /* Place it in the middle horizontally */
+    transform: translate(-50%, -50%); /* Correct for the element's own size */
+    background-color: #fff; /* White background for the modal */
+    padding: 25px;
+    border-radius: 12px;  /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    z-index: 1000;    /* Ensure the modal is above other elements */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%; /* Modal width */
+    max-width: 400px; /* Maximum width */
+    text-align: center; /* Center the text */
+  }
+  
+  .logout-modal p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333; /* Dark text for readability */
+    font-weight: bold;
+  }
+  
+  .logout-modal button {
+    margin: 10px;
+    padding: 12px 25px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-modal button:hover {
+    opacity: 0.8; /* Slight opacity change on hover */
+  }
+  
+  /* Yes button - Red */
+  .logout-modal button.confirm {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .logout-modal button.confirm:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Cancel button - Green */
+  .logout-modal button.cancel {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  .logout-modal button.cancel:hover {
+    background-color: #27ae60;
+  }
+  
+  /* Overlay - Semi-transparent background */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 999; /* Just below the modal */
+  }
+  
+  /* Sidebar */
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--sidebar-expanded-width); /* Default expanded width */
+    background: var(--light); /* Ensure background color is set */
+    transition: width var(--transition-duration); 
+    z-index: 1000;
+    font-family: var(--lato);
+    overflow-x: hidden;
+    padding-top: 20px; /* Prevent white gaps at the top of sidebar */
+  }
+  
+  #sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+  }
+  
+  
+  #sidebar .hide {
+    width: 60px;
+  }
+  
+  /* Brand (Title) */
+  #sidebar .brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  
+  /* When Sidebar is Collapsed */
+  #sidebar.collapsed .brand .text {
+    display: none; /* Hide "AdminHub" text */
+  }
+  
+  /* Adjust icon position */
+  #sidebar.collapsed .brand i {
+    margin: auto;
+    font-size: 28px;
+  }
+  
+  #sidebar .brand bx {
+    min-width: 60px; 
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Sidebar Menu */
+  #sidebar .side-menu {
+    width: 100%;
+    margin-top: 20px;
+    padding-left: 10px;
+  }
+  
+  
+  /* Sidebar Items */
+  #sidebar .side-menu li {
+    height: 48px;
+    background: transparent;
+    border-radius: 24px 0 0 24px;
+    padding: 10px 20px;
+    list-style: none;
+    transition: 0.3s;
+  }
+  
+  #sidebar .side-menu li a i {
+    font-size: 24px;
+    min-width: 40px;
+    text-align: center;
+  }
+  
+  /* Hide text when collapsed */
+  #sidebar.collapsed .side-menu li a .text {
+    display: none;
+  }
+  
+  /* Keep icons centered */
+  #sidebar.collapsed .side-menu li a {
+    justify-content: center;
+  }
+  
+  /* ✅ Adds codee */
+  #sidebar .side-menu li a {
+    width: 100%;
+    height: 100%;
+    background: light;   /* Remove white background */
+    display: flex;
+    align-items: center;
+    border-radius: 48px;
+    font-size: 16px;
+    color: var(--dark);
+    text-decoration: none ;
+    white-space: nowrap;
+    overflow-x: hidden;
+  }
+  
+  
+  #sidebar .side-menu li.active {
+    background: var(--grey);
+    position: relative;
+  }
+  
+  #sidebar .side-menu li.active::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    top: -40px;
+    right: 0;
+    box-shadow: 20px 20px 0 var(--grey);
+    z-index: -1;
+  }
+  
+  #sidebar .side-menu li.active::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    bottom: -40px;
+    right: 0;
+    box-shadow: 20px -20px 0 var(--grey);
+    z-index: -1;
+  }
+  
+  #sidebar.hide .side-menu li.active a {
+    color: var(--blue);
+    
+  }
+  
+  #sidebar.hide .side-menu li a {
+    width: calc(48px - (4px * 2));
+    transition: width .3s ease;
+  }
+  
+  
+  
+  #sidebar .side-menu li a.logout {
+    color: var(--red);
+  }
+  #sidebar .side-menu.top li a:hover {
+    color: var(--blue); 
+  }
+  
+  #sidebar .side-menu li a .bx {
+    min-width: calc(60px - ((4px+6px)*2));
+    display: flex;
+    justify-content: center;
+  }
+  
+  
+  /* Content */
+  #content {
+    position: relative;
+    width: calc(100% - 280px); /* Default when sidebar is open */
+    left: 280px;
+    transition: 0.3s ease-in-out;
+  }
+  
+  /* Adjust content when sidebar is collapsed */
+  #sidebar.collapsed ~ #content,
+  #sidebar.collapsed #content {
+    width: calc(100% - 80px); /* Adjust content width when sidebar is collapsed */
+    left: 80px; /* Adjust content position to compensate for the collapsed sidebar */
+  }
+  
+  #sidebar.hide ~ #content {
+    width: calc(100% - 60px);
+    left: 60px;
+  }
+  
+  /* ✅ NavBar */
+  #content nav {
+    
+    height: 56px;
+    background: var(--light); /* Match the background */
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+    font-family: var(--lato);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a shadow for better separation */
+    z-index: 1000;
+  }
+  
+  #content nav::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: -40px;
+    left: 0;
+    border-radius: 50%;
+    box-shadow: -20px -20px 0 var(--light);
+  }
+  #content nav a {
+    color: var(--dark);
+  }
+  
+  #content nav .bx.bx-menu {
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  #content nav .nav-link {
+    font-size: 16px;
+    transition: .3s ease;
+  }
+  
+  #content nav .nav-link:hover {
+    color: var(--blue);
+  }
+  
+  #content nav form {
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  #content nav form .form-input {
+    display:flex;
+    align-items: center;
+    height: 36px;
+  }
+  
+  #content nav form .form-input input {
+    flex-grow: 1;
+    padding: 0 16;
+    height: 100%;
+    border: none;
+    background: var(--grey);
+    border-radius: 36 0 0 36px;
+    outline:none;
+  }
+  
+  #content nav form .form-input button { 
+    width: 36px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--blue);
+    color: var(--light);
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-radius: 0 36px 36px 0;
+    cursor: pointer;
+  }
+  
+  #content nav .notification {
+    font-size: 20px;
+    position: relative;
+  }
+  
+  #content nav .notification .num {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--light);
+    background: var(--red);
+    color:var(--light);
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  #content nav .profile img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  
+  /* Main */
+  #content main {
+    padding-top: 70px;
+    width: 100%; /* This ensures it adjusts with #content */
+    padding: 36px 24px;
+    font-family: var(--poppins);
+  }
+  
+  #content main .head-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 16px;
+    flex-wrap: wrap;
+  }
+  
+  #content main .head-title .left h1 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--dark);
+  }
+  
+  #content main .head-title .left .breadcrumb {
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    list-style: none; /* Remove bullets */
+    padding: 0; /* Remove left padding */
+    margin: 0; /* Remove any margin */
+  }
+  
+  #content main .head-title .left .breadcrumb li {
+    color: var(--dark);
+    display: flex;
+    align-items: center; /* Ensure items are aligned properly */
+    text-decoration: none;
+  }
+  
+  #content main .head-title .left .breadcrumb li i {
+    margin: 0 5px; /* Small margin between the icon and text */
+  }
+  
+  #content main .head-title .left .breadcrumb li a {
+    color: var(--dark); 
+    font-size: 16px;
+  }
+  
+  #content main .head-title .left .breadcrumb li a:active {
+    color: var(--blue);
+    pointer-events: unset;
+  }
+  
+  
+  #content main .box-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: 24px;
+    margin-top: 36px;
+  }
+  
+  #content main .box-info li {
+    padding: 24px;
+    background: var(--light);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+  }
+  
+  #content main .box-info li .bx {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    background: var(--grey);
+    font-size: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #content main .box-info li:nth-child(1) .bx {
+    background: var(--light-blue);
+    color: var(--blue);
+  }
+  
+  #content main .box-info li:nth-child(2) .bx {
+    background: var(--light-yellow);
+    color: var(--yellow);
+  }
+  
+  #content main .box-info li:nth-child(3) .bx {
+    background: var(--light-orange);
+    color: var(--orange);
+  }
+
+  #content main .box-info li:nth-child(5) .bx {
+    background: var(--light-blue);
+    color: var(--blue);
+  }
+
+  #content main .box-info li:nth-child(6) .bx {
+    background: var(--light-yellow);
+    color: var(--yellow);
+  }
+
+  #content main .box-info li:nth-child(7) .bx {
+    background: var(--light-orange);
+    color: var(--orange);
+  }
+  
+  #content main .box-info li .text h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--dark);
+  } 
+  
+  /* Table */
+  #content main .table-data {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 100%;
+    color: var(--dark);
+  }
+  
+  #content main .table-data > div {
+    background: var(--light);
+    padding: 24px;
+    border-radius: 20px;
+    overflow-x: auto;
+    /*width: 100%;*/ /* This ensures it adjusts with #content */
+  }
+  
+  #content main .table-data .head {
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-bottom: 24px;
+    /*min-width: 420px;*/
+  }
+  
+  #content main .table-data .head h3 {
+    margin-right: auto;
+    font-size: 24px;
+    font-weight: 600;
+    
+  }
+  
+  #content main .table-data .head .bx {
+    cursor: pointer;
+  }
+  
+  #content main .table-data .order {
+    flex-grow: 1;
+    flex-basis: 520px;
+  }
+  
+  #content main .table-data .order table {
+    width: 100%;
+    border-collapse: collapse;
+  
+  }
+  
+  #content main .table-data .order table th {
+    padding-bottom: 12px;
+    font-size: 13px;
+    text-align: left;
+    border-bottom: 1px solid var(--grey);
+  }
+  
+  #content main .table-data .order table td {
+    padding: 16px 0;
+  }
+  
+  #content main .table-data .order table tr td:first-child {
+    display: flex;
+    align-items: center;
+    grid-gap: 12px;
+    padding-left: 6px;
+  }
+  
+  /*
+  #content main .table-data .order table td img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  */
+  
+  #content main .table-data .order table tbody tr:hover {
+    background: var(--grey);
+  }
+  
+  #content main .table-data .order table tr td .status {
+    font-size: 10px;
+    padding: 6px 16px;
+    color: var(--light);
+    border-radius: 20px;
+    
+  }
+  
+  #content main .table-data .order table tr td .status.active {
+    background: var(--blue);
+  }
+  
+  #content main .table-data .order table tr td .status.inactive {
+    background: var(--yellow);
+  }
+  
+  #content main .table-data .todo {
+    flex-grow: 1;
+    flex-basis: 300px;
+  }
+  
+  #content main .table-data .todo .todo-list {
+    width: 100%;
+  }
+  
+  #content main .table-data .todo .todo-list li {
+    width: 100%;
+    margin-bottom: 16px;
+    background: var(--grey);
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 10px solid;
+  }
+  
+  #content main .table-data .todo .todo-list li .bx {
+    cursor: pointer;
+  }
+  
+  #content main .table-data .todo .todo-list li.completed {
+    border-left: 10px solid var(--blue);
+  }
+  
+  #content main .table-data .todo .todo-list li.not-completed {
+    border-left: 10px solid var(--orange);
+  }
+  
+  
+  
+  #content main .table-data .todo .todo-list li:last-child {
+    margin-bottom: 0;
+  }
+  
+  .header {
+    display: flex; /* Enable flexbox */
+    align-items: center; /* Vertically center content */
+    justify-content: space-between; /* Add space between elements */
+    gap: 20px; /* Adjust spacing between header and search bar */
+    width: 100%; /* Ensure the container takes the full width */
+    margin-bottom: 20px; /* Optional: Add space below the header */
+  }
+  
+  .search-bar-container {
+    flex-shrink: 0; /* Prevent the search bar from shrinking */
+  }
+  
+  .search-input {
+    width: 300px; /* Adjust width */
+    max-width: 100%; /* Ensure it doesn't exceed the container */
+    height: 40px; /* Adjust height */
+    padding: 8px; /* Add padding for better spacing */
+    border: 1px solid #ccc; /* Optional: border styling */
+    border-radius: 5px; /* Optional: rounded corners */
+    font-size: 16px; /* Adjust font size */
+  }
+  
+  
+  
+  /*
+  #content main .table-data .order table th,
+  #content main .table-data .order table td {
+    padding: 12px 16px;
+    border: 2px solid var(--grey);
+    text-align: left;
+    color: var(--dark);
+  }
+  
+  */
+  
+  /*
+  #statistics {
+    padding-top: 70px;
+    width: 100%; /* This ensures it adjusts with #content 
+    padding: 36px 24px;
+    font-family: var(--poppins);
+  }
+  
+  #sidebar.collapsed ~ #content #statistics {
+    width: calc(100% - 80px); /* Adjust content width when sidebar is collapsed 
+    left: 80px; /* Adjust content position to compensate for the collapsed sidebar 
+  }
+  
+  /* Ensure statistics section takes full width inside content 
+  .statistics-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  */  
+
+  #statistics {
+    padding-top: 70px;
+    width: 100%;
+    padding: 36px 24px;
+    font-family: var(--poppins);
+  }
+  
+  #sidebar.collapsed ~ #content #statistics {
+    width: calc(100% - 80px); /* Adjust content width when sidebar is collapsed */
+    left: 80px; /* Adjust content position to compensate for the collapsed sidebar */
+  }
+  
+  /* Styling for the statistics container */
+  .statistics-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  /* Ensure proper spacing between the graphs */
+  .row {
+    margin-bottom: 30px;
+  }
+  
+  /* Responsive Grid */
+  @media (max-width: 768px) {
+    .statistics-container {
+      padding: 15px;
+    }
+    
+    .row > .col-md-6 {
+      margin-bottom: 15px; /* Space between the graphs in smaller screens */
+    }
+    
+    .row > .col-md-12 {
+      margin-top: 20px;
+    }
+  }
+  
+  /* Adjusting the chart's width in the layout */
+  .PieChart, .BarChart {
+    width: 100% !important; /* Ensure full width */
+    max-width: 100%;
+  }
+  
+  
+  
